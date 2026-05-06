@@ -12,4 +12,6 @@ app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 import userRoutes from "./routes/userRoutes";
+import postRoutes from "./routes/postRoutes";
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
