@@ -1,6 +1,12 @@
 import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import path from "path";
 require("express-async-errors");
 
 export const app = express();
 
-// SKRIV DIN SERVERKOD HÄR!
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
+app.use(cookieParser());
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
