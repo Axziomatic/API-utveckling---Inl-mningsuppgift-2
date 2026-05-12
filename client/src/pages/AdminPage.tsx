@@ -13,7 +13,7 @@ interface User {
 interface Post {
   _id: string;
   title: string;
-  author: { _id: string; username: string };
+  author: { _id: string; username: string } | null;
 }
 
 export default function AdminPage() {
@@ -101,7 +101,7 @@ export default function AdminPage() {
           {posts.map((post) => (
             <div key={post._id} className="admin-list-item">
               <Link to={`/recipe/${post._id}`}>
-                {post.title} <small>av {post.author.username}</small>
+                {post.title} <small>av {post.author?.username ?? "okänd"}</small>
               </Link>
               <div className="admin-list-actions">
                 <Link to={`/edit/${post._id}`} className="btn btn-small">

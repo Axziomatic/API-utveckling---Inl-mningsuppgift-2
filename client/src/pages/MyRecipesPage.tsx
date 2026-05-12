@@ -19,7 +19,7 @@ export default function MyRecipesPage() {
     fetch(`${API_URL}/posts`)
       .then((res) => res.json())
       .then((data) =>
-        setPosts(data.filter((p: any) => p.author._id === user?._id))
+        setPosts(data.filter((p: any) => p.author?._id === user?._id))
       );
   }, [user]);
 

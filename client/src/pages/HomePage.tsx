@@ -8,7 +8,7 @@ interface Post {
   title: string;
   content: string;
   imageUrl?: string;
-  author: { _id: string; username: string };
+  author: { _id: string; username: string } | null;
   createdAt: string;
 }
 
@@ -37,7 +37,7 @@ export default function HomePage() {
             )}
             <div className="recipe-card-body">
               <h2>{post.title}</h2>
-              <p className="recipe-card-author">Av {post.author.username}</p>
+              <p className="recipe-card-author">Av {post.author?.username ?? "okänd"}</p>
             </div>
           </Link>
         ))}

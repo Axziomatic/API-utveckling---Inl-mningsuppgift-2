@@ -2,6 +2,7 @@ import { Router, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User";
+import { Post } from "../models/Post";
 import { auth, adminOnly, AuthRequest } from "../middleware/auth";
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret-jwt-key-change-me";
@@ -104,13 +105,14 @@ router.put("/:id", auth, adminOnly, async (req: AuthRequest, res: Response) => {
   res.json(user);
 });
 
-// Delete user (admin only)
+// Delete user (admin only) — also removes the user's posts
 router.delete("/:id", auth, adminOnly, async (req: AuthRequest, res: Response) => {
   const user = await User.findByIdAndDelete(req.params.id);
   if (!user) {
     res.status(404).json({ error: "User not found" });
     return;
   }
+  await Post.deleteMany({ author: req.params.id });
   res.json({ message: "User deleted" });
 });
 

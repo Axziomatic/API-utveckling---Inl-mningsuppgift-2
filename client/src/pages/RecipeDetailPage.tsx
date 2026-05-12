@@ -9,7 +9,7 @@ interface Post {
   title: string;
   content: string;
   imageUrl?: string;
-  author: { _id: string; username: string };
+  author: { _id: string; username: string } | null;
   createdAt: string;
 }
 
@@ -36,7 +36,7 @@ export default function RecipeDetailPage() {
 
   if (!post) return <p>Laddar...</p>;
 
-  const isOwner = user && user._id === post.author._id;
+  const isOwner = user && post.author && user._id === post.author._id;
   const canEdit = isOwner || user?.isAdmin;
 
   return (
@@ -50,7 +50,7 @@ export default function RecipeDetailPage() {
       )}
       <h1>{post.title}</h1>
       <p className="recipe-detail-author">
-        Av {post.author.username} &middot;{" "}
+        Av {post.author?.username ?? "okänd"} &middot;{" "}
         {new Date(post.createdAt).toLocaleDateString("sv-SE")}
       </p>
       <div className="recipe-detail-content">{post.content}</div>
