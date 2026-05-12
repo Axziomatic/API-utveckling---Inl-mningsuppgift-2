@@ -4,15 +4,28 @@ import path from "path";
 import { Post } from "../models/Post";
 import { auth, AuthRequest } from "../middleware/auth";
 
+const ALLOWED_EXTS = /^\.(jpe?g|png|gif|webp)$/;
+
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../../uploads"),
   filename: (_req, file, cb) => {
-    const uniqueName = `${Date.now()}-${file.originalname}`;
-    cb(null, uniqueName);
+    const ext = path.extname(file.originalname).toLowerCase();
+    const safeExt = ALLOWED_EXTS.test(ext) ? ext : "";
+    cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${safeExt}`);
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image uploads are allowed"));
+    }
+  },
+});
 const router = Router();
 
 // Get all posts (public)

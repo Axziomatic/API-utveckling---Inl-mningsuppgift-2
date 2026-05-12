@@ -5,7 +5,7 @@ import { User } from "../models/User";
 import { Post } from "../models/Post";
 import { auth, adminOnly, AuthRequest } from "../middleware/auth";
 
-const JWT_SECRET = process.env.JWT_SECRET || "super-secret-jwt-key-change-me";
+const JWT_SECRET = process.env.JWT_SECRET!;
 const router = Router();
 
 // Register
