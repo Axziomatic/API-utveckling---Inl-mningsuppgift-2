@@ -1,16 +1,11 @@
 {
-  "name": "@plugga-tech/react-express-user-content-ts-server-template",
-  "version": "1.0.2",
-  "author": "plugga.tech",
-  "description": "En självrättande inlämningsuppgift.",
-  "homepage": "https://plugga.tech",
+  "name": "smakminnen-server",
+  "version": "1.0.0",
   "scripts": {
-    "postinstall": "plugga init",
     "start": "node dist/server.js",
     "build": "tsc",
     "check": "tsc --noEmit",
-    "dev": "nodemon --transpile-only src/server.ts",
-    "test": "plugga test --vitest --ts"
+    "dev": "nodemon --transpile-only src/server.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
