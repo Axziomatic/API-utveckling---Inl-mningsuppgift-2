@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/Layout";
+import RequireAuth from "./components/RequireAuth";
+import RequireAdmin from "./components/RequireAdmin";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -19,11 +21,15 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/create" element={<CreateRecipePage />} />
-            <Route path="/edit/:id" element={<EditRecipePage />} />
             <Route path="/recipe/:id" element={<RecipeDetailPage />} />
-            <Route path="/my-recipes" element={<MyRecipesPage />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route element={<RequireAuth />}>
+              <Route path="/create" element={<CreateRecipePage />} />
+              <Route path="/edit/:id" element={<EditRecipePage />} />
+              <Route path="/my-recipes" element={<MyRecipesPage />} />
+            </Route>
+            <Route element={<RequireAdmin />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route>
           </Route>
         </Routes>
       </AuthProvider>

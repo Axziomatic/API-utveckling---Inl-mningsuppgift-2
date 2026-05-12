@@ -22,8 +22,6 @@ export default function AdminPage() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    if (!user?.isAdmin) return;
-
     fetch(`${API_URL}/users`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => setUsers(data));
@@ -31,7 +29,7 @@ export default function AdminPage() {
     fetch(`${API_URL}/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data));
-  }, [user]);
+  }, []);
 
   const toggleAdmin = async (userId: string, currentStatus: boolean) => {
     const res = await fetch(`${API_URL}/users/${userId}`, {
@@ -64,8 +62,6 @@ export default function AdminPage() {
     if (res.ok) setPosts(posts.filter((p) => p._id !== postId));
   };
 
-  if (!user?.isAdmin) return <p>Åtkomst nekad.</p>;
-
   return (
     <div className="admin-page">
       <h1>Admin</h1>
@@ -85,7 +81,7 @@ export default function AdminPage() {
                 >
                   {u.isAdmin ? "Ta bort admin" : "Gör till admin"}
                 </button>
-                {u._id !== user._id && (
+                {user && u._id !== user._id && (
                   <button
                     onClick={() => deleteUser(u._id)}
                     className="btn btn-small btn-danger"

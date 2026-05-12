@@ -22,10 +22,14 @@ router.post("/register", async (req: AuthRequest, res: Response) => {
     return;
   }
 
+  const userCount = await User.countDocuments();
+  const isAdmin = userCount === 0;
+
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await User.create({
     username,
     password: hashedPassword,
+    isAdmin,
   });
 
   res.status(201).json(user);
@@ -72,7 +76,8 @@ router.post("/logout", (_req: AuthRequest, res: Response) => {
 router.get("/me", auth, async (req: AuthRequest, res: Response) => {
   const user = await User.findById(req.userId);
   if (!user) {
-    res.status(404).json({ error: "User not found" });
+    res.clearCookie("token");
+    res.status(401).json({ error: "User no longer exists" });
     return;
   }
   res.json(user);
